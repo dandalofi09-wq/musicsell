@@ -1,0 +1,316 @@
+/* ==========================================
+   STYLES CSS - Estilização Global e Componentes
+   ========================================== */
+
+/* --- VARIÁVEIS DE FALLBACK (Caso o variables.css não carregue) --- */
+:root {
+  --primary-purple: #6D28D9;
+  --dark-purple: #3B0764;
+  --pink-accent: #EC4899;
+  --bg-light: #F9FAFB;
+  --text-dark: #1F2937;
+  --text-light: #4B5563;
+  --white: #FFFFFF;
+  --radius-md: 12px;
+  --radius-lg: 24px;
+  --shadow-sm: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  --shadow-md: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+  --transition: all 0.3s ease;
+}
+
+/* --- ACESSIBILIDADE --- */
+.skip-link {
+  position: absolute;
+  top: -40px;
+  left: 0;
+  background: var(--pink-accent);
+  color: var(--white);
+  padding: 8px 16px;
+  z-index: 1000;
+  transition: top 0.2s ease;
+}
+
+.skip-link:focus {
+  top: 0;
+  outline: 3px solid var(--dark-purple);
+}
+
+/* Foco visível global para navegação por teclado */
+:focus-visible {
+  outline: 3px dashed var(--pink-accent);
+  outline-offset: 4px;
+}
+
+/* --- BOTÕES --- */
+.btn-primary, .btn-secondary {
+  display: inline-block;
+  padding: 0.75rem 1.5rem;
+  border-radius: 50px;
+  font-weight: 600;
+  text-align: center;
+  transition: var(--transition);
+}
+
+.btn-primary {
+  background-color: var(--primary-purple);
+  color: var(--white);
+  box-shadow: 0 4px 14px rgba(109, 40, 217, 0.3);
+}
+
+.btn-primary:hover {
+  background-color: var(--dark-purple);
+  transform: translateY(-2px);
+}
+
+.btn-secondary {
+  background-color: transparent;
+  color: var(--primary-purple);
+  border: 2px solid var(--primary-purple);
+}
+
+.btn-secondary:hover {
+  background-color: var(--primary-purple);
+  color: var(--white);
+}
+
+/* --- CABEÇALHO (HEADER) --- */
+header {
+  background-color: var(--white);
+  box-shadow: var(--shadow-sm);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.logo {
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: var(--dark-purple);
+  letter-spacing: -0.5px;
+}
+
+#nav-menu {
+  display: flex;
+  gap: 2rem;
+  align-items: center;
+}
+
+#nav-menu a {
+  font-weight: 500;
+  color: var(--text-dark);
+  transition: var(--transition);
+}
+
+#nav-menu a:hover:not(.btn-primary) {
+  color: var(--pink-accent);
+}
+
+#menu-toggle {
+  display: none; /* Escondido no Desktop */
+  padding: 0.5rem;
+  background-color: var(--primary-purple);
+  color: var(--white);
+  border-radius: 8px;
+  font-weight: bold;
+}
+
+/* --- SEÇÃO HERO --- */
+#hero {
+  padding: 6rem 2rem;
+  text-align: center;
+  background: linear-gradient(135deg, var(--bg-light) 0%, #E9E1F5 100%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+#hero h1 {
+  font-size: clamp(2.5rem, 5vw, 4rem);
+  font-weight: 800;
+  color: var(--dark-purple);
+  line-height: 1.1;
+  max-width: 800px;
+}
+
+#hero p {
+  font-size: 1.25rem;
+  color: var(--text-light);
+  max-width: 600px;
+}
+
+.cta-group {
+  display: flex;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+/* --- SEÇÃO PACOTES --- */
+#pacotes {
+  padding: 5rem 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+#pacotes h2 {
+  text-align: center;
+  font-size: 2.5rem;
+  color: var(--dark-purple);
+  margin-bottom: 3rem;
+}
+
+.grid-pacotes {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 2rem;
+  align-items: stretch;
+}
+
+.card-pacote {
+  background: var(--white);
+  border: 1px solid #E5E7EB;
+  border-radius: var(--radius-lg);
+  padding: 2.5rem 2rem;
+  display: flex;
+  flex-direction: column;
+  box-shadow: var(--shadow-sm);
+  transition: var(--transition);
+  position: relative;
+}
+
+.card-pacote:hover {
+  box-shadow: var(--shadow-md);
+  transform: translateY(-5px);
+}
+
+.card-pacote h3 {
+  font-size: 1.5rem;
+  color: var(--dark-purple);
+  margin-bottom: 0.5rem;
+}
+
+.card-pacote .preco {
+  font-size: 1.25rem;
+  font-weight: bold;
+  color: var(--pink-accent);
+  margin-bottom: 1.5rem;
+  padding-bottom: 1.5rem;
+  border-bottom: 1px solid #E5E7EB;
+}
+
+.card-pacote ul {
+  margin-bottom: 2rem;
+  flex-grow: 1; /* Empurra o botão para o fundo */
+}
+
+.card-pacote li {
+  margin-bottom: 0.75rem;
+  color: var(--text-light);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.card-pacote li::before {
+  content: "✓";
+  color: var(--primary-purple);
+  font-weight: bold;
+}
+
+.card-pacote button {
+  width: 100%;
+  padding: 1rem;
+  border-radius: var(--radius-md);
+  background-color: var(--bg-light);
+  color: var(--text-dark);
+  font-weight: bold;
+  transition: var(--transition);
+}
+
+.card-pacote button:hover {
+  background-color: var(--primary-purple);
+  color: var(--white);
+}
+
+/* --- DESTAQUE NO PLANO PREMIUM --- */
+.card-pacote.destaque {
+  border: 2px solid var(--primary-purple);
+  transform: scale(1.05);
+}
+
+.card-pacote.destaque:hover {
+  transform: scale(1.05) translateY(-5px);
+}
+
+.card-pacote.destaque .badge {
+  position: absolute;
+  top: -15px;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: var(--pink-accent);
+  color: var(--white);
+  padding: 0.25rem 1rem;
+  border-radius: 20px;
+  font-size: 0.875rem;
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.card-pacote.destaque button {
+  background-color: var(--primary-purple);
+  color: var(--white);
+}
+
+.card-pacote.destaque button:hover {
+  background-color: var(--dark-purple);
+}
+
+/* --- RESPONSIVIDADE (MOBILE FIRST) --- */
+@media (max-width: 768px) {
+  #menu-toggle {
+    display: block; /* Mostra o botão hambúrguer */
+  }
+
+  #nav-menu {
+    display: none;
+    flex-direction: column;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 100%;
+    background-color: var(--white);
+    padding: 2rem;
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+  }
+
+  #nav-menu.active {
+    display: flex; /* Classe controlada pelo JavaScript */
+  }
+
+  .cta-group {
+    flex-direction: column;
+    width: 100%;
+  }
+
+  .btn-primary, .btn-secondary {
+    width: 100%;
+  }
+
+  .card-pacote.destaque {
+    transform: scale(1); /* Desativa o aumento de tamanho no mobile para não quebrar a tela */
+  }
+  
+  .card-pacote.destaque:hover {
+    transform: translateY(-5px);
+  }
+}
