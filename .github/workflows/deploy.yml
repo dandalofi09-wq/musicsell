@@ -1,0 +1,19 @@
+name: Deploy para GitHub Pages
+
+on:
+  push:
+    branches:
+      - main # O deploy acontece sempre que houver push na main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout do código
+        uses: actions/checkout@v4
+
+      - name: Deploy para GitHub Pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: . # Publica todo o conteúdo da raiz
