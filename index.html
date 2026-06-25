@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sua Música Aqui | Músicas Personalizadas</title>
+    <link rel="stylesheet" href="css/variables.css">
+    <link rel="stylesheet" href="css/reset.css">
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+    <a href="#main-content" class="skip-link">Pular para o conteúdo</a>
+    
+    <header>
+        <nav aria-label="Navegação principal">
+            <div class="logo">Sua Música Aqui</div>
+            <button id="menu-toggle" aria-expanded="false" aria-controls="nav-menu">Menu</button>
+            <ul id="nav-menu">
+                <li><a href="#como-funciona">Como Funciona</a></li>
+                <li><a href="#pedidos" class="btn-primary">Criar minha música</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main id="main-content">
+        
+        <section id="hero">
+            <h1>Transforme momentos especiais em uma música feita para você</h1>
+            <p>TikTok, Reels, presentes e homenagens únicas.</p>
+            <div class="cta-group">
+                <a href="#pedidos" class="btn-primary">Criar minha música</a>
+                <a href="#amostras" class="btn-secondary">Ouvir exemplos</a>
+            </div>
+        </section>
+        
+        <section id="pacotes">
+            <h2>Escolha o seu Pacote</h2>
+            <div class="grid-pacotes">
+                
+                <article class="card-pacote">
+                    <h3>Plano Básico</h3>
+                    <p class="preco">A partir de R$ XX</p>
+                    <ul>
+                        <li>Música curta personalizada</li>
+                        <li>Entrega em áudio</li>
+                    </ul>
+                    <button>Quero este pacote</button>
+                </article>
+
+                <article class="card-pacote destaque">
+                    <span class="badge">Mais escolhido</span>
+                    <h3>Plano Premium</h3>
+                    <p class="preco">A partir de R$ XX</p>
+                    <ul>
+                        <li>Música completa personalizada</li>
+                        <li>Letra exclusiva e Capa</li>
+                    </ul>
+                    <button>Quero este pacote</button>
+                </article>
+                
+            </div>
+        </section>
+
+    </main>
+
+    <script src="js/main.js" type="module"></script>
+</body>
+</html>
