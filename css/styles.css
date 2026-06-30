@@ -77,6 +77,32 @@ html {
   color: var(--white);
 }
 
+/* --- ESTADO LOADING DO BOTÃO --- */
+button.loading {
+  opacity: 0.8;
+  cursor: not-allowed;
+  position: relative;
+}
+
+button.loading::after {
+  content: '';
+  position: absolute;
+  width: 14px;
+  height: 14px;
+  margin: auto;
+  border: 2px solid transparent;
+  border-radius: 50%;
+  border-top-color: currentColor;
+  animation: spinner 0.8s linear infinite;
+  right: 16px;
+  top: 0;
+  bottom: 0;
+}
+
+@keyframes spinner {
+  to { transform: rotate(360deg); }
+}
+
 /* --- CABEÇALHO (HEADER) --- */
 header {
   background-color: var(--white);
@@ -296,6 +322,43 @@ nav {
   background-color: var(--dark-purple);
 }
 
+#amostras {
+  padding: 0 2rem 5rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+#amostras h2 {
+  text-align: center;
+  font-size: 2rem;
+  color: var(--dark-purple);
+  margin-bottom: 2rem;
+}
+
+.grid-amostras {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 1rem;
+}
+
+.card-amostra {
+  background: var(--white);
+  border: 1px solid #E5E7EB;
+  border-radius: var(--radius-md);
+  padding: 1rem;
+  box-shadow: var(--shadow-sm);
+}
+
+.card-amostra h3 {
+  font-size: 1.1rem;
+  color: var(--dark-purple);
+  margin-bottom: 0.75rem;
+}
+
+.card-amostra audio {
+  width: 100%;
+}
+
 #formulario-pedido {
   padding: 0 2rem 5rem;
   max-width: 900px;
@@ -336,6 +399,15 @@ nav {
   color: var(--text-dark);
 }
 
+.formulario-pedido input:disabled,
+.formulario-pedido textarea:disabled,
+.formulario-pedido select:disabled {
+  background-color: #F3F4F6;
+  color: #9CA3AF;
+  cursor: not-allowed;
+  opacity: 0.7;
+}
+
 .formulario-pedido textarea {
   min-height: 120px;
   resize: vertical;
@@ -350,6 +422,55 @@ nav {
 .formulario-pedido .helper-text {
   color: var(--text-light);
   font-size: 0.95rem;
+}
+
+.mensagem-formulario {
+  padding: 0.85rem 1rem;
+  border-radius: var(--radius-md);
+  border: 1px solid transparent;
+  font-weight: 600;
+}
+
+.mensagem-formulario[hidden] {
+  display: none !important;
+}
+
+.mensagem-formulario.erro {
+  background: #FEF2F2;
+  border-color: #FECACA;
+  color: #991B1B;
+}
+
+.mensagem-formulario.sucesso {
+  background: #ECFDF5;
+  border-color: #A7F3D0;
+  color: #065F46;
+}
+
+.campo-erro {
+  color: #B91C1C;
+  font-size: 0.92rem;
+  font-weight: 600;
+  min-height: 1.1rem;
+  margin-top: -0.25rem;
+}
+
+.campo-erro[hidden] {
+  display: none !important;
+}
+
+.formulario-pedido input[aria-invalid="true"],
+.formulario-pedido textarea[aria-invalid="true"],
+.formulario-pedido select[aria-invalid="true"] {
+  border-color: #DC2626;
+  background: #FEF2F2;
+}
+
+.formulario-pedido input[aria-invalid="true"]:focus,
+.formulario-pedido textarea[aria-invalid="true"]:focus,
+.formulario-pedido select[aria-invalid="true"]:focus {
+  outline: 2px solid rgba(220, 38, 38, 0.25);
+  outline-offset: 1px;
 }
 
 .captcha-box {
@@ -371,6 +492,74 @@ nav {
 
 .captcha-pergunta input {
   max-width: 140px;
+}
+
+.modal-pix {
+  position: fixed;
+  inset: 0;
+  background: rgba(17, 24, 39, 0.8);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+  z-index: 1000;
+  pointer-events: auto;
+  backdrop-filter: blur(2px);
+}
+
+.modal-pix[hidden] {
+  display: none !important;
+}
+
+.modal-pix-conteudo {
+  background: var(--white);
+  border-radius: var(--radius-lg);
+  padding: 2rem;
+  max-width: 420px;
+  width: 100%;
+  box-shadow: var(--shadow-md);
+  position: relative;
+  text-align: center;
+}
+
+.modal-pix-link {
+  display: inline-block;
+  margin: 0.75rem 0 1rem;
+  text-decoration: none;
+}
+
+.modal-pix-qr {
+  display: block;
+  width: min(100%, 280px);
+  height: auto;
+  margin: 0 auto 1rem;
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-sm);
+}
+
+.modal-pix-fechar {
+  position: absolute;
+  top: 0.75rem;
+  right: 0.75rem;
+  border: none;
+  background: transparent;
+  font-size: 1.5rem;
+  cursor: pointer;
+}
+
+.pix-chave {
+  margin: 1rem 0 1.5rem;
+  padding: 1rem;
+  background: var(--bg-light);
+  border-radius: var(--radius-md);
+  word-break: break-all;
+}
+
+.mensagem-copiar-pix {
+  min-height: 1.25rem;
+  margin: 0.75rem 0 1rem;
+  color: var(--primary-purple);
+  font-weight: 600;
 }
 
 /* --- RESPONSIVIDADE (MOBILE FIRST) --- */
