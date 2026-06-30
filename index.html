@@ -14,7 +14,7 @@
     <header>
         <nav aria-label="Navegação principal">
             <div class="logo">Sua Música Aqui</div>
-            <button id="menu-toggle" aria-expanded="false" aria-controls="nav-menu">Menu</button>
+            <button id="menu-toggle" type="button" aria-expanded="false" aria-controls="nav-menu" aria-label="Abrir menu principal">Menu</button>
             <ul id="nav-menu">
                 <li><a href="#como-funciona">Como Funciona</a></li>
                 <li><a href="#pedidos" class="btn-primary">Criar minha música</a></li>
@@ -26,7 +26,7 @@
         
         <section id="hero">
             <h1>Transforme momentos especiais em uma música feita para você</h1>
-            <p>TikTok, Reels, presentes e homenagens únicas.</p>
+            <p>Casamentos, pedidos de namoro, aniversários, zoações... tudo sem minstério</p>
             <div class="cta-group">
                 <a href="#pedidos" class="btn-primary">Criar minha música</a>
                 <a href="#amostras" class="btn-secondary">Ouvir exemplos</a>
@@ -34,35 +34,73 @@
         </section>
         
         <section id="pacotes">
-            <h2>Escolha o seu Pacote</h2>
+            <h2>Crie a sua música personalizada</h2>
             <div class="grid-pacotes">
                 
                 <article class="card-pacote">
-                    <h3>Plano Básico</h3>
-                    <p class="preco">A partir de R$ XX</p>
+                    <h3>Um valor somente</h3>
+                    <p class="preco">Apenas R$ 15,00 </p>
                     <ul>
-                        <li>Música curta personalizada</li>
-                        <li>Entrega em áudio</li>
+                        <li>Música personalizada</li>
+                        <li>Entrega em áudio, ou no Youtube</li>
                     </ul>
-                    <button>Quero este pacote</button>
-                </article>
-
-                <article class="card-pacote destaque">
-                    <span class="badge">Mais escolhido</span>
-                    <h3>Plano Premium</h3>
-                    <p class="preco">A partir de R$ XX</p>
-                    <ul>
-                        <li>Música completa personalizada</li>
-                        <li>Letra exclusiva e Capa</li>
-                    </ul>
-                    <button>Quero este pacote</button>
-                </article>
-                
+                    <button id="btn-contratar" class="btn-primary" type="button">Quero contratar</button>
+                </article>        
             </div>
         </section>
 
-    </main>
+        <section id="formulario-pedido" aria-labelledby="formulario-titulo">
+            <h2 id="formulario-titulo">Conte-nos sobre a música</h2>
+            <form id="form-pedido" class="formulario-pedido">
+                <label for="descricao">Fale sobre a pessoa ou o momento especial com ela <span aria-hidden="true">*</span></label>
+                <textarea id="descricao" name="descricao" rows="5" placeholder="Ex.: É para um pedido de namoro, para uma pessoa de signo de Peixes, que gosta da cor azul e nasceu em 15 de agosto." required></textarea>
 
+                <label for="genero">Escolha o gênero musical <span aria-hidden="true">*</span></label>
+                <select id="genero" name="genero" required>
+                    <option value="" disabled selected>Selecione um gênero</option>
+                    <option value="pagode">Pagode</option>
+                    <option value="sertanejo">Sertanejo</option>
+                    <option value="rap">Rap</option>
+                    <option value="mpb">MPB</option>
+                    <option value="funk">Funk</option>
+                    <option value="pop">Pop</option>
+                    <option value="kpop">K-Pop</option>
+                    <option value="rock">Rock</option>
+                    <option value="outros">Outros</option>
+                </select>
+
+                <div id="campo-genero-outro" hidden>
+                    <label for="generoOutro">Especifique o gênero (máx. 50 caracteres) <span aria-hidden="true">*</span></label>
+                    <input type="text" id="generoOutro" name="generoOutro" maxlength="50" placeholder="Ex.: gospel" />
+                </div>
+
+                <label for="contatoTipo">Escolha como prefere ser contactado <span aria-hidden="true">*</span></label>
+                <select id="contatoTipo" name="contatoTipo" required>
+                    <option value="" disabled selected>Selecione</option>
+                    <option value="email">E-mail</option>
+                    <option value="whatsapp">WhatsApp</option>
+                </select>
+
+                
+                <label for="frase">Observações ou itens a mais como uma frase ou poema para usar como base</label>
+                <textarea id="frase" name="frase" rows="4" placeholder="Ex.: 'Se a vida for um caminho, quero caminhar ao seu lado...'" ></textarea>
+
+                <label for="contatoValor" id="contatoValorLabel">Informe seu e-mail ou WhatsApp <span aria-hidden="true">*</span></label>
+                <input type="text" id="contatoValor" name="contatoValor" placeholder="Ex.: seuemail@email.com ou (11) 99999-9999" required />
+
+
+                <div class="captcha-box">
+                    <label for="captchaResposta">Resolva a conta para provar que você não é um robô <span aria-hidden="true">*</span></label>
+                    <div class="captcha-pergunta">
+                        <span id="captcha-pergunta">7 + 5 = ?</span>
+                        <input type="number" id="captchaResposta" name="captchaResposta" required />
+                    </div>
+                </div>
+
+                <button type="submit" class="btn-primary">Enviar pedido</button>
+            </form>
+        </section>
+    </main>
     <script src="js/main.js" type="module"></script>
 </body>
 </html>

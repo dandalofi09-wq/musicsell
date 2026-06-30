@@ -41,6 +41,10 @@
   outline-offset: 4px;
 }
 
+html {
+  scroll-padding-top: 5.5rem;
+}
+
 /* --- BOTÕES --- */
 .btn-primary, .btn-secondary {
   display: inline-block;
@@ -116,11 +120,12 @@ nav {
 
 #menu-toggle {
   display: none; /* Escondido no Desktop */
-  padding: 0.5rem;
+  padding: 0.75rem 1rem;
   background-color: var(--primary-purple);
   color: var(--white);
   border-radius: 8px;
   font-weight: bold;
+  min-width: 3rem;
 }
 
 /* --- SEÇÃO HERO --- */
@@ -159,13 +164,15 @@ nav {
   padding: 5rem 2rem;
   max-width: 1200px;
   margin: 0 auto;
+  text-align: center;
 }
 
 #pacotes h2 {
   text-align: center;
   font-size: 2.5rem;
   color: var(--dark-purple);
-  margin-bottom: 3rem;
+  margin: 0 auto 3rem;
+  max-width: 700px;
 }
 
 .grid-pacotes {
@@ -173,6 +180,7 @@ nav {
   grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
   gap: 2rem;
   align-items: stretch;
+  justify-content: center;
 }
 
 .card-pacote {
@@ -182,9 +190,22 @@ nav {
   padding: 2.5rem 2rem;
   display: flex;
   flex-direction: column;
+  align-items: center;
+  text-align: center;
   box-shadow: var(--shadow-sm);
   transition: var(--transition);
   position: relative;
+}
+
+.card-pacote.destaque {
+  border: 2px solid var(--primary-purple);
+  transform: scale(1.05);
+}
+
+@media (max-width: 768px) {
+  .card-pacote.destaque {
+    transform: scale(1);
+  }
 }
 
 .card-pacote:hover {
@@ -273,6 +294,83 @@ nav {
 
 .card-pacote.destaque button:hover {
   background-color: var(--dark-purple);
+}
+
+#formulario-pedido {
+  padding: 0 2rem 5rem;
+  max-width: 900px;
+  margin: 0 auto;
+  scroll-margin-top: 6rem;
+}
+
+#formulario-pedido h2 {
+  text-align: center;
+  font-size: 2rem;
+  color: var(--dark-purple);
+  margin-bottom: 2rem;
+}
+
+.formulario-pedido {
+  background: var(--white);
+  border: 1px solid #E5E7EB;
+  border-radius: var(--radius-lg);
+  padding: 2rem;
+  box-shadow: var(--shadow-sm);
+  display: grid;
+  gap: 1rem;
+}
+
+.formulario-pedido label {
+  font-weight: 600;
+  color: var(--dark-purple);
+}
+
+.formulario-pedido input,
+.formulario-pedido textarea,
+.formulario-pedido select {
+  width: 100%;
+  padding: 0.9rem 1rem;
+  border: 1px solid #E5E7EB;
+  border-radius: var(--radius-md);
+  font: inherit;
+  color: var(--text-dark);
+}
+
+.formulario-pedido textarea {
+  min-height: 120px;
+  resize: vertical;
+}
+
+.formulario-pedido button {
+  width: fit-content;
+  border: none;
+  cursor: pointer;
+}
+
+.formulario-pedido .helper-text {
+  color: var(--text-light);
+  font-size: 0.95rem;
+}
+
+.captcha-box {
+  display: grid;
+  gap: 0.5rem;
+}
+
+.captcha-pergunta {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.captcha-pergunta span {
+  font-weight: 700;
+  color: var(--dark-purple);
+}
+
+.captcha-pergunta input {
+  max-width: 140px;
 }
 
 /* --- RESPONSIVIDADE (MOBILE FIRST) --- */
