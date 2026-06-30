@@ -3,6 +3,16 @@ export function initFormulario() {
 
     if (!form) return;
 
+    // Flag para prevenir submissões duplicadas
+    let isSubmitting = false;
+    let timeoutSubmissao = null;
+
+    const modalPix = document.getElementById('modal-pix');
+    const fecharModalPix = document.getElementById('fechar-modal-pix');
+    const botaoJaPaguei = document.getElementById('btn-ja-paguei');
+    const botaoCopiarPix = document.getElementById('btn-copiar-pix');
+    const chavePixValor = document.getElementById('pix-chave-valor');
+    const mensagemCopiarPix = document.getElementById('mensagem-copiar-pix');
     const genero = document.getElementById('genero');
     const campoGeneroOutro = document.getElementById('campo-genero-outro');
     const generoOutro = document.getElementById('generoOutro');
@@ -18,34 +28,112 @@ export function initFormulario() {
 
     genero?.addEventListener('change', atualizarCampoGeneroOutro);
     contatoTipo?.addEventListener('change', atualizarCampoContato);
+    form.addEventListener('input', (event) => {
+        const campo = event.target;
+
+        if (!(campo instanceof HTMLInputElement || campo instanceof HTMLTextAreaElement || campo instanceof HTMLSelectElement)) {
+            return;
+        }
+
+        if (!campo.hasAttribute('required')) return;
+
+        if (campo.value.trim()) {
+            limparErroCampo(campo);
+        }
+    });
+
     form.addEventListener('submit', async (e) => {
         e.preventDefault();
 
-        if (!validarFormulario(form)) return;
+        // Impedir múltiplas submissões
+        if (isSubmitting) return;
 
-        const formData = new FormData(form);
+        limparMensagemFormulario();
+
+        if (!validarFormulario(form)) {
+            exibirMensagemFormulario('erro', 'Revise os campos obrigatórios para continuar.');
+            return;
+        }
+
+        isSubmitting = true;
+        const botaoSubmit = form.querySelector('button[type="submit"]');
+
+        // Desabilitar TODO o formulário
+        const camposFormulario = form.querySelectorAll('input, textarea, select, button');
+        camposFormulario.forEach(campo => campo.disabled = true);
+
+        if (botaoSubmit) {
+            botaoSubmit.classList.add('loading');
+            botaoSubmit.textContent = 'Enviando...';
+        }
+
+        // Timeout de segurança (30 segundos)
+        timeoutSubmissao = setTimeout(() => {
+            if (isSubmitting) {
+                exibirMensagemFormulario('erro', 'A requisição demorou muito. Tente novamente.');
+                restaurarFormulario();
+            }
+        }, 30000);
+
+        // Gerar ID único para o pedido
+        const pedidoId = gerarIdPedido();
+        document.getElementById('pedidoId').value = pedidoId;
+
+        // Construir objeto de dados manualmente
+        const dados = {
+            pedidoId: pedidoId,
+            descricao: document.getElementById('descricao').value,
+            genero: document.getElementById('genero').value,
+            generoOutro: document.getElementById('generoOutro').value || '',
+            contatoTipo: document.getElementById('contatoTipo').value,
+            contatoValor: document.getElementById('contatoValor').value,
+            frase: document.getElementById('frase').value || '',
+            captchaResposta: document.getElementById('captchaResposta').value
+        };
+
+        console.log('Dados sendo enviados:', dados);
 
         try {
             const response = await fetch('https://formspree.io/f/xkolvkvk', {
                 method: 'POST',
-                body: formData,
-                headers: { 'Accept': 'application/json' }
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(dados)
             });
 
+            clearTimeout(timeoutSubmissao);
+
+            // Formspree retorna 200 para sucesso
             if (response.ok) {
-                alert('Pedido enviado com sucesso!');
-                form.reset();
-                gerarCaptcha();
-                atualizarCampoGeneroOutro();
-                atualizarCampoContato();
+                abrirModalPix();
             } else {
-                alert('Não foi possível enviar o pedido. Tente novamente.');
+                // Log do erro para debug
+                const responseText = await response.text();
+                console.error('Erro na resposta:', response.status, responseText);
+                throw new Error(`Erro ${response.status}: ${responseText}`);
             }
         } catch (error) {
-            console.error('Erro:', error);
-            alert('Não foi possível enviar o pedido. Tente novamente.');
+            clearTimeout(timeoutSubmissao);
+            console.error('Erro completo:', error);
+            exibirMensagemFormulario('erro', 'Não foi possível enviar o pedido. Tente novamente.');
+            restaurarFormulario();
         }
     });
+
+    function restaurarFormulario() {
+        isSubmitting = false;
+        const botaoSubmit = form.querySelector('button[type="submit"]');
+        
+        // Re-habilitar todos os campos
+        const camposFormulario = form.querySelectorAll('input, textarea, select, button');
+        camposFormulario.forEach(campo => campo.disabled = false);
+        
+        if (botaoSubmit) {
+            botaoSubmit.classList.remove('loading');
+            botaoSubmit.textContent = 'Enviar pedido';
+        }
+    }
 
     function atualizarCampoGeneroOutro() {
         if (!campoGeneroOutro || !generoOutro) return;
@@ -60,6 +148,7 @@ export function initFormulario() {
             generoOutro.required = false;
             generoOutro.value = '';
             generoOutro.setAttribute('disabled', 'true');
+            limparErroCampo(generoOutro);
         }
     }
 
@@ -81,6 +170,8 @@ export function initFormulario() {
             contatoValor.placeholder = 'Ex.: seuemail@email.com ou (11) 99999-9999';
             contatoValorLabel.textContent = 'Informe seu e-mail ou WhatsApp *';
         }
+
+        limparErroCampo(contatoValor);
     }
 
     function gerarCaptcha() {
@@ -97,22 +188,121 @@ export function initFormulario() {
             captchaResposta.value = '';
         }
     }
+
+    function abrirModalPix() {
+        if (mensagemCopiarPix) {
+            mensagemCopiarPix.textContent = '';
+        }
+
+        modalPix?.removeAttribute('hidden');
+        document.body.style.overflow = 'hidden';
+    }
+
+    function fecharModalPixHandler() {
+        modalPix?.setAttribute('hidden', 'true');
+        document.body.style.overflow = '';
+
+        if (mensagemCopiarPix) {
+            mensagemCopiarPix.textContent = '';
+        }
+    }
+
+    async function copiarChavePixHandler() {
+        const chave = chavePixValor?.textContent?.trim();
+
+        if (!chave) return;
+
+        try {
+            if (navigator.clipboard?.writeText) {
+                await navigator.clipboard.writeText(chave);
+            } else {
+                const areaTemporaria = document.createElement('textarea');
+                areaTemporaria.value = chave;
+                document.body.appendChild(areaTemporaria);
+                areaTemporaria.select();
+                document.execCommand('copy');
+                document.body.removeChild(areaTemporaria);
+            }
+
+            if (mensagemCopiarPix) {
+                mensagemCopiarPix.textContent = 'Chave Pix copiada!';
+            }
+        } catch (error) {
+            if (mensagemCopiarPix) {
+                mensagemCopiarPix.textContent = 'Não foi possível copiar. Tente manualmente.';
+            }
+        }
+    }
+
+    function confirmarPagamentoHandler() {
+        fecharModalPixHandler();
+        form.reset();
+        gerarCaptcha();
+        atualizarCampoGeneroOutro();
+        atualizarCampoContato();
+        limparErrosFormulario(form);
+        restaurarFormulario();
+        exibirMensagemFormulario('sucesso', 'Pagamento confirmado! Obrigado por sua compra.');
+        form.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+
+    fecharModalPix?.addEventListener('click', fecharModalPixHandler);
+    botaoCopiarPix?.addEventListener('click', copiarChavePixHandler);
+    botaoJaPaguei?.addEventListener('click', confirmarPagamentoHandler);
+    modalPix?.addEventListener('click', (event) => {
+        if (event.target === modalPix) {
+            fecharModalPixHandler();
+        }
+    });
+}
+
+function gerarIdPedido() {
+    // Gera ID com data/hora de Brasília + sufixo aleatório para evitar colisões
+    const agora = new Date();
+    const dataHoraBrasilia = new Intl.DateTimeFormat('pt-BR', {
+        timeZone: 'America/Sao_Paulo',
+        year: 'numeric',
+        month: '2-digit',
+        day: '2-digit',
+        hour: '2-digit',
+        minute: '2-digit',
+        second: '2-digit',
+        hour12: false
+    }).formatToParts(agora);
+
+    const partes = Object.fromEntries(
+        dataHoraBrasilia
+            .filter((parte) => parte.type !== 'literal')
+            .map((parte) => [parte.type, parte.value])
+    );
+
+    const dataHoraId = `${partes.year}${partes.month}${partes.day}-${partes.hour}${partes.minute}${partes.second}`;
+    const sufixoAleatorio = Math.random().toString(36).slice(2, 10).toUpperCase();
+
+    return `PED-${dataHoraId}-${sufixoAleatorio}`;
 }
 
 function validarFormulario(form) {
     const camposObrigatorios = form.querySelectorAll('[required]');
+    let primeiroCampoInvalido = null;
 
     for (const campo of camposObrigatorios) {
         const containerOculto = campo.closest('[hidden]');
         const escondido = containerOculto || campo.offsetParent === null;
 
-        if (escondido) continue;
+        if (escondido) {
+            limparErroCampo(campo);
+            continue;
+        }
+
+        limparErroCampo(campo);
 
         if (!campo.value.trim()) {
-            campo.setAttribute('aria-invalid', 'true');
-            campo.focus();
-            campo.reportValidity();
-            return false;
+            definirErroCampo(campo, obterMensagemObrigatoria(campo));
+            if (!primeiroCampoInvalido) {
+                primeiroCampoInvalido = campo;
+            }
+            continue;
         }
 
         if (campo.id === 'captchaResposta') {
@@ -120,15 +310,91 @@ function validarFormulario(form) {
             const digitado = Number(campo.value);
 
             if (digitado !== esperado) {
-                campo.setAttribute('aria-invalid', 'true');
-                campo.focus();
-                campo.reportValidity();
-                return false;
+                definirErroCampo(campo, 'Resposta incorreta. Confira a conta e tente novamente.');
+                if (!primeiroCampoInvalido) {
+                    primeiroCampoInvalido = campo;
+                }
+                continue;
             }
         }
 
-        campo.setAttribute('aria-invalid', 'false');
+        if (campo.id === 'contatoValor' && campo.type === 'email' && !campo.checkValidity()) {
+            definirErroCampo(campo, 'Digite um e-mail válido.');
+            if (!primeiroCampoInvalido) {
+                primeiroCampoInvalido = campo;
+            }
+            continue;
+        }
+
+        campo.removeAttribute('aria-invalid');
+    }
+
+    if (primeiroCampoInvalido) {
+        primeiroCampoInvalido.focus();
+        return false;
     }
 
     return true;
+}
+
+function limparErrosFormulario(form) {
+    const campos = form.querySelectorAll('input, textarea, select');
+    campos.forEach((campo) => limparErroCampo(campo));
+}
+
+function definirErroCampo(campo, mensagem) {
+    const elementoErro = obterElementoErro(campo);
+
+    campo.setAttribute('aria-invalid', 'true');
+
+    if (elementoErro) {
+        elementoErro.textContent = mensagem;
+        elementoErro.removeAttribute('hidden');
+    }
+}
+
+function limparErroCampo(campo) {
+    const elementoErro = obterElementoErro(campo);
+    campo.removeAttribute('aria-invalid');
+
+    if (elementoErro) {
+        elementoErro.textContent = '';
+        elementoErro.setAttribute('hidden', 'true');
+    }
+}
+
+function obterElementoErro(campo) {
+    if (!campo?.id) return null;
+    return document.getElementById(`erro-${campo.id}`);
+}
+
+function obterMensagemObrigatoria(campo) {
+    const mensagens = {
+        descricao: 'Descreva a pessoa ou o momento especial.',
+        genero: 'Selecione um gênero musical.',
+        generoOutro: 'Informe o gênero musical desejado.',
+        contatoTipo: 'Escolha como prefere ser contactado.',
+        contatoValor: 'Informe seu e-mail ou WhatsApp.',
+        captchaResposta: 'Resolva a conta para confirmar que você não é robô.'
+    };
+
+    return mensagens[campo.id] || 'Este campo é obrigatório.';
+}
+
+function exibirMensagemFormulario(tipo, mensagem) {
+    const mensagemFormulario = document.getElementById('form-mensagem');
+    if (!mensagemFormulario) return;
+
+    mensagemFormulario.textContent = mensagem;
+    mensagemFormulario.className = `mensagem-formulario ${tipo}`;
+    mensagemFormulario.removeAttribute('hidden');
+}
+
+function limparMensagemFormulario() {
+    const mensagemFormulario = document.getElementById('form-mensagem');
+    if (!mensagemFormulario) return;
+
+    mensagemFormulario.textContent = '';
+    mensagemFormulario.className = 'mensagem-formulario';
+    mensagemFormulario.setAttribute('hidden', 'true');
 }
