@@ -16,8 +16,7 @@
             <div class="logo">Sua Música Aqui</div>
             <button id="menu-toggle" type="button" aria-expanded="false" aria-controls="nav-menu" aria-label="Abrir menu principal">Menu</button>
             <ul id="nav-menu">
-                <li><a href="#como-funciona">Como Funciona</a></li>
-                <li><a href="#pedidos" class="btn-primary">Criar minha música</a></li>
+                <li><a href="#formulario-pedido" class="btn-primary">Criar minha música</a></li>
             </ul>
         </nav>
     </header>
@@ -26,9 +25,9 @@
         
         <section id="hero">
             <h1>Transforme momentos especiais em uma música feita para você</h1>
-            <p>Casamentos, pedidos de namoro, aniversários, zoações... tudo sem minstério</p>
+            <p>Casamentos, pedidos de namoro, aniversários, zoações... tudo sem mistério</p>
             <div class="cta-group">
-                <a href="#pedidos" class="btn-primary">Criar minha música</a>
+                <a href="#formulario-pedido" class="btn-primary">Criar minha música</a>
                 <a href="#amostras" class="btn-secondary">Ouvir exemplos</a>
             </div>
         </section>
@@ -49,14 +48,46 @@
             </div>
         </section>
 
+        <section id="amostras" aria-labelledby="amostras-titulo">
+            <h2 id="amostras-titulo">Ouça Alguns Exemplos</h2>
+            <div class="grid-amostras">
+                <article class="card-amostra">
+                    <h3>🎵 Música para a esposa</h3>
+                    <audio controls preload="none">
+                        <source src="musicas/riponga.mp3" type="audio/mpeg" />
+                        Seu navegador não suporta reprodução de áudio.
+                    </audio>
+                </article>
+
+                <article class="card-amostra">
+                    <h3>👶 Música para filho</h3>
+                    <audio controls preload="none">
+                        <source src="musicas/pacotinho.mp3" type="audio/mpeg" />
+                        Seu navegador não suporta reprodução de áudio.
+                    </audio>
+                </article>
+
+                <article class="card-amostra">
+                    <h3>🎉 Música para festas</h3>
+                    <audio controls preload="none">
+                        <source src="musicas/porta.mp3" type="audio/mpeg" />
+                        Seu navegador não suporta reprodução de áudio.
+                    </audio>
+                </article>
+            </div>
+        </section>
+
         <section id="formulario-pedido" aria-labelledby="formulario-titulo">
             <h2 id="formulario-titulo">Conte-nos sobre a música</h2>
-            <form id="form-pedido" class="formulario-pedido">
+            <form id="form-pedido" class="formulario-pedido" novalidate>
+                <input type="hidden" id="pedidoId" name="pedidoId" />
+                <p id="form-mensagem" class="mensagem-formulario" aria-live="polite" hidden></p>
                 <label for="descricao">Fale sobre a pessoa ou o momento especial com ela <span aria-hidden="true">*</span></label>
-                <textarea id="descricao" name="descricao" rows="5" placeholder="Ex.: É para um pedido de namoro, para uma pessoa de signo de Peixes, que gosta da cor azul e nasceu em 15 de agosto." required></textarea>
+                <textarea id="descricao" name="descricao" rows="5" placeholder="Ex.: É para um pedido de namoro, para uma pessoa de signo de Peixes, que gosta da cor azul e nasceu em 15 de agosto." aria-describedby="erro-descricao" required></textarea>
+                <p id="erro-descricao" class="campo-erro" aria-live="polite" hidden></p>
 
                 <label for="genero">Escolha o gênero musical <span aria-hidden="true">*</span></label>
-                <select id="genero" name="genero" required>
+                <select id="genero" name="genero" aria-describedby="erro-genero" required>
                     <option value="" disabled selected>Selecione um gênero</option>
                     <option value="pagode">Pagode</option>
                     <option value="sertanejo">Sertanejo</option>
@@ -68,39 +99,60 @@
                     <option value="rock">Rock</option>
                     <option value="outros">Outros</option>
                 </select>
+                <p id="erro-genero" class="campo-erro" aria-live="polite" hidden></p>
 
                 <div id="campo-genero-outro" hidden>
                     <label for="generoOutro">Especifique o gênero (máx. 50 caracteres) <span aria-hidden="true">*</span></label>
-                    <input type="text" id="generoOutro" name="generoOutro" maxlength="50" placeholder="Ex.: gospel" />
+                    <input type="text" id="generoOutro" name="generoOutro" maxlength="50" placeholder="Ex.: gospel" aria-describedby="erro-generoOutro" />
+                    <p id="erro-generoOutro" class="campo-erro" aria-live="polite" hidden></p>
                 </div>
 
                 <label for="contatoTipo">Escolha como prefere ser contactado <span aria-hidden="true">*</span></label>
-                <select id="contatoTipo" name="contatoTipo" required>
+                <select id="contatoTipo" name="contatoTipo" aria-describedby="erro-contatoTipo" required>
                     <option value="" disabled selected>Selecione</option>
                     <option value="email">E-mail</option>
                     <option value="whatsapp">WhatsApp</option>
                 </select>
-
-                
-                <label for="frase">Observações ou itens a mais como uma frase ou poema para usar como base</label>
-                <textarea id="frase" name="frase" rows="4" placeholder="Ex.: 'Se a vida for um caminho, quero caminhar ao seu lado...'" ></textarea>
+                <p id="erro-contatoTipo" class="campo-erro" aria-live="polite" hidden></p>
 
                 <label for="contatoValor" id="contatoValorLabel">Informe seu e-mail ou WhatsApp <span aria-hidden="true">*</span></label>
-                <input type="text" id="contatoValor" name="contatoValor" placeholder="Ex.: seuemail@email.com ou (11) 99999-9999" required />
+                <input type="text" id="contatoValor" name="contatoValor" placeholder="Ex.: seuemail@email.com ou (11) 99999-9999" aria-describedby="erro-contatoValor" required />
+                <p id="erro-contatoValor" class="campo-erro" aria-live="polite" hidden></p>
 
+                <label for="frase">Observações ou itens a mais como uma frase ou poema para usar como base</label>
+                <textarea id="frase" name="frase" rows="4" placeholder="Ex.: 'Se a vida for um caminho, quero caminhar ao seu lado...'" ></textarea>
 
                 <div class="captcha-box">
                     <label for="captchaResposta">Resolva a conta para provar que você não é um robô <span aria-hidden="true">*</span></label>
                     <div class="captcha-pergunta">
                         <span id="captcha-pergunta">7 + 5 = ?</span>
-                        <input type="number" id="captchaResposta" name="captchaResposta" required />
+                        <input type="number" id="captchaResposta" name="captchaResposta" aria-describedby="erro-captchaResposta" required />
                     </div>
+                    <p id="erro-captchaResposta" class="campo-erro" aria-live="polite" hidden></p>
                 </div>
 
                 <button type="submit" class="btn-primary">Enviar pedido</button>
             </form>
         </section>
     </main>
+
+    <div id="modal-pix" class="modal-pix" role="dialog" aria-modal="true" aria-labelledby="modal-pix-titulo" hidden>
+        <div class="modal-pix-conteudo">
+            <button id="fechar-modal-pix" class="modal-pix-fechar" type="button" aria-label="Fechar modal">×</button>
+            <h2 id="modal-pix-titulo">Pagamento via Pix</h2>
+            <p>Envie o valor de R$ 15,00 para a chave abaixo:</p>
+            <a class="modal-pix-link btn-secondary" href="https://nubank.com.br/cobranca/h2HwlbAXb6dqeo3" target="_blank" rel="noopener noreferrer">Abrir cobrança do Nubank</a>
+            <img class="modal-pix-qr" src="qrCode/qrCode.jpg" alt="QR Code para pagamento via Pix">
+            <div class="pix-chave">
+                <strong>E-mail:</strong>
+                <span id="pix-chave-valor">dandalofi@gmail.com</span>
+            </div>
+            <button id="btn-copiar-pix" class="btn-secondary" type="button">Copiar chave Pix</button>
+            <p id="mensagem-copiar-pix" class="mensagem-copiar-pix" aria-live="polite"></p>
+            <button id="btn-ja-paguei" class="btn-primary" type="button">Já paguei</button>
+        </div>
+    </div>
+
     <script src="js/main.js" type="module"></script>
 </body>
 </html>
