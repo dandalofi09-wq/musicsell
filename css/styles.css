@@ -122,36 +122,15 @@ nav {
 }
 
 .logo {
-  font-size: 1.5rem;
-  font-weight: 800;
-  color: var(--dark-purple);
-  letter-spacing: -0.5px;
-}
-
-#nav-menu {
-  display: flex;
-  gap: 2rem;
+  display: inline-flex;
   align-items: center;
+  line-height: 0;
 }
 
-#nav-menu a {
-  font-weight: 500;
-  color: var(--text-dark);
-  transition: var(--transition);
-}
-
-#nav-menu a:hover:not(.btn-primary) {
-  color: var(--pink-accent);
-}
-
-#menu-toggle {
-  display: none; /* Escondido no Desktop */
-  padding: 0.75rem 1rem;
-  background-color: var(--primary-purple);
-  color: var(--white);
-  border-radius: 8px;
-  font-weight: bold;
-  min-width: 3rem;
+.logo img {
+  display: block;
+  width: clamp(120px, 18vw, 170px);
+  height: auto;
 }
 
 /* --- SEÇÃO HERO --- */
@@ -191,6 +170,133 @@ nav {
   max-width: 1200px;
   margin: 0 auto;
   text-align: center;
+}
+
+#como-funciona,
+#prazos-e-politicas,
+#depoimentos,
+#faq,
+#redes-sociais {
+  padding: 0 2rem 5rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+#como-funciona h2,
+#prazos-e-politicas h2,
+#depoimentos h2,
+#faq h2,
+#redes-sociais h2 {
+  text-align: center;
+  font-size: 2rem;
+  color: var(--dark-purple);
+  margin-bottom: 2rem;
+}
+
+#como-funciona ol {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+  gap: 1rem;
+}
+
+#como-funciona li {
+  background: var(--white);
+  border: 1px solid #E5E7EB;
+  border-radius: var(--radius-md);
+  padding: 1rem;
+  box-shadow: var(--shadow-sm);
+  color: var(--text-light);
+  line-height: 1.5;
+}
+
+#como-funciona li strong {
+  color: var(--dark-purple);
+}
+
+#prazos-e-politicas {
+  display: grid;
+  gap: 0.75rem;
+}
+
+#prazos-e-politicas p {
+  background: var(--white);
+  border: 1px solid #E5E7EB;
+  border-radius: var(--radius-md);
+  padding: 1rem;
+  color: var(--text-light);
+  line-height: 1.6;
+}
+
+#prazos-e-politicas p strong {
+  color: var(--dark-purple);
+}
+
+#depoimentos .card-amostra p {
+  color: var(--text-light);
+  line-height: 1.6;
+}
+
+#faq {
+  max-width: 900px;
+}
+
+#faq details {
+  background: var(--white);
+  border: 1px solid #E5E7EB;
+  border-radius: var(--radius-md);
+  padding: 1rem;
+  box-shadow: var(--shadow-sm);
+}
+
+#faq details + details {
+  margin-top: 0.75rem;
+}
+
+#faq summary {
+  cursor: pointer;
+  font-weight: 700;
+  color: var(--dark-purple);
+}
+
+#faq p {
+  margin-top: 0.75rem;
+  color: var(--text-light);
+  line-height: 1.6;
+}
+
+#redes-sociais {
+  max-width: 900px;
+  text-align: center;
+}
+
+#redes-sociais ul {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+  margin-bottom: 1rem;
+}
+
+#redes-sociais a {
+  display: inline-block;
+  padding: 0.65rem 1rem;
+  border: 1px solid #E5E7EB;
+  border-radius: 999px;
+  background: var(--white);
+  color: var(--dark-purple);
+  font-weight: 700;
+  transition: var(--transition);
+}
+
+#redes-sociais a:hover {
+  border-color: var(--primary-purple);
+  color: var(--primary-purple);
+  transform: translateY(-2px);
+}
+
+#redes-sociais p {
+  color: var(--text-light);
 }
 
 #pacotes h2 {
@@ -564,24 +670,12 @@ nav {
 
 /* --- RESPONSIVIDADE (MOBILE FIRST) --- */
 @media (max-width: 768px) {
-  #menu-toggle {
-    display: block; /* Mostra o botão hambúrguer */
+  nav {
+    gap: 0.75rem;
   }
 
-  #nav-menu {
-    display: none;
-    flex-direction: column;
-    position: absolute;
-    top: 100%;
-    left: 0;
-    width: 100%;
-    background-color: var(--white);
-    padding: 2rem;
-    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
-  }
-
-  #nav-menu.active {
-    display: flex; /* Classe controlada pelo JavaScript */
+  .logo img {
+    width: clamp(105px, 36vw, 140px);
   }
 
   .cta-group {
@@ -599,5 +693,22 @@ nav {
   
   .card-pacote.destaque:hover {
     transform: translateY(-5px);
+  }
+
+  #como-funciona,
+  #prazos-e-politicas,
+  #depoimentos,
+  #faq,
+  #redes-sociais {
+    padding: 0 1rem 4rem;
+  }
+
+  #como-funciona h2,
+  #prazos-e-politicas h2,
+  #depoimentos h2,
+  #faq h2,
+  #redes-sociais h2 {
+    font-size: 1.75rem;
+    margin-bottom: 1.5rem;
   }
 }
