@@ -4,6 +4,19 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sua Música Aqui | Músicas Personalizadas</title>
+    <meta name="description" content="Músicas personalizadas para casamentos, aniversários, pedidos e homenagens. Conte sua história e receba uma música exclusiva com entrega rápida.">
+    <meta property="og:type" content="website">
+    <meta property="og:locale" content="pt_BR">
+    <meta property="og:site_name" content="Sua Música Aqui">
+    <meta property="og:title" content="Sua Música Aqui | Músicas Personalizadas">
+    <meta property="og:description" content="Transforme momentos especiais em uma música feita para você. Encomende agora por R$ 15,00.">
+    <meta property="og:url" content="https://seu-dominio.com/">
+    <meta property="og:image" content="https://seu-dominio.com/qrCode/qrCode.jpg">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Sua Música Aqui | Músicas Personalizadas">
+    <meta name="twitter:description" content="Música personalizada com entrega rápida para momentos especiais.">
+    <meta name="twitter:image" content="https://seu-dominio.com/qrCode/qrCode.jpg">
+    <link rel="canonical" href="https://seu-dominio.com/">
     <link rel="stylesheet" href="css/variables.css">
     <link rel="stylesheet" href="css/reset.css">
     <link rel="stylesheet" href="css/styles.css">
@@ -13,11 +26,9 @@
     
     <header>
         <nav aria-label="Navegação principal">
-            <div class="logo">Sua Música Aqui</div>
-            <button id="menu-toggle" type="button" aria-expanded="false" aria-controls="nav-menu" aria-label="Abrir menu principal">Menu</button>
-            <ul id="nav-menu">
-                <li><a href="#formulario-pedido" class="btn-primary">Criar minha música</a></li>
-            </ul>
+            <a href="#hero" class="logo" aria-label="Ir para o início da página">
+                <img src="images/logo.PNG" alt="Sua Música Aqui">
+            </a>
         </nav>
     </header>
 
@@ -45,6 +56,34 @@
                     </ul>
                     <button id="btn-contratar" class="btn-primary" type="button">Quero contratar</button>
                 </article>        
+            </div>
+        </section>
+
+        <section id="como-funciona" aria-labelledby="como-funciona-titulo">
+            <h2 id="como-funciona-titulo">Como funciona</h2>
+            <ol>
+                <li><strong>1. Conte sua história:</strong> preencha o formulário com detalhes do momento, estilo musical e contato.</li>
+                <li><strong>2. Confirme o pedido:</strong> faça o pagamento via Pix e clique em "Já paguei" para finalizarmos sua solicitação.</li>
+                <li><strong>3. Receba sua música:</strong> entregamos seu áudio personalizado no prazo combinado.</li>
+            </ol>
+        </section>
+
+
+        <section id="depoimentos" aria-labelledby="depoimentos-titulo">
+            <h2 id="depoimentos-titulo">Depoimentos de clientes</h2>
+            <div class="grid-amostras">
+                <article class="card-amostra">
+                    <h3>Ana e Lucas - Pedido de namoro</h3>
+                    <p>"A música ficou com a nossa cara e emocionou todo mundo. Foi o ponto alto do dia."</p>
+                </article>
+                <article class="card-amostra">
+                    <h3>Mariana - Aniversário da mãe</h3>
+                    <p>"Conseguiu transformar memórias em letra. Minha mãe chorou de alegria quando ouviu."</p>
+                </article>
+                <article class="card-amostra">
+                    <h3>Rafael - Homenagem para o filho</h3>
+                    <p>"Atendimento rápido e música entregue no prazo. Recomendo para momentos especiais."</p>
+                </article>
             </div>
         </section>
 
@@ -133,6 +172,44 @@
 
                 <button type="submit" class="btn-primary">Enviar pedido</button>
             </form>
+        </section>
+
+        
+        <section id="prazos-e-politicas" aria-labelledby="prazos-politicas-titulo">
+            <h2 id="prazos-politicas-titulo">Prazos e políticas</h2>
+            <p><strong>Prazo de entrega:</strong> 12 horas após confirmação de pagamento e envio de todas as informações.</p>
+            <p><strong>Política de revisão:</strong> você pode solicitar 1 revisão gratuita para ajustes pontuais de letra, mantendo a proposta original.</p>
+            <p><strong>Reembolso:</strong> por se tratar de produto personalizado, não há reembolso após o início da produção. Em caso de cancelamento antes do início, analisamos o estorno integral.</p>
+            <p><strong>Privacidade:</strong> os dados de contato (e-mail/WhatsApp) são usados apenas para atendimento, produção e entrega da música. Não compartilhamos seus dados com terceiros para marketing.</p>
+        </section>
+
+        <section id="faq" aria-labelledby="faq-titulo">
+            <h2 id="faq-titulo">FAQ</h2>
+            <details>
+                <summary>Quanto tempo demora para eu receber minha música?</summary>
+                <p>Normalmente em até 12 horas, dependendo do volume de pedidos e da complexidade da letra.</p>
+            </details>
+            <details>
+                <summary>Posso pedir ajustes depois de receber?</summary>
+                <p>Sim. Oferecemos 1 revisão gratuita para pequenos ajustes de letra e detalhes combinados.</p>
+            </details>
+            <details>
+                <summary>Como funciona o envio da música pronta?</summary>
+                <p>Você recebe pelo contato informado no formulário (e-mail ou WhatsApp), em formato de áudio.</p>
+            </details>
+            <details>
+                <summary>Meus dados pessoais ficam seguros?</summary>
+                <p>Sim. Usamos seus dados apenas para atendimento e entrega do pedido, sem compartilhamento para publicidade.</p>
+            </details>
+        </section>
+
+        <section id="redes-sociais" aria-labelledby="redes-sociais-titulo">
+            <h2 id="redes-sociais-titulo">Acompanhe nas redes</h2>
+            <ul>
+                <li><a href="https://instagram.com" target="_blank" rel="noopener noreferrer">Instagram</a></li>
+                <li><a href="https://www.tiktok.com" target="_blank" rel="noopener noreferrer">TikTok</a></li>
+                <li><a href="https://wa.me/5511999999999" target="_blank" rel="noopener noreferrer">WhatsApp</a></li>
+            </ul>
         </section>
     </main>
 
