@@ -6,6 +6,7 @@ export function initFormulario() {
     // Flag para prevenir submissões duplicadas
     let isSubmitting = false;
     let timeoutSubmissao = null;
+    let envioController = null;
 
     const modalPix = document.getElementById('modal-pix');
     const fecharModalPix = document.getElementById('fechar-modal-pix');
@@ -13,6 +14,7 @@ export function initFormulario() {
     const botaoCopiarPix = document.getElementById('btn-copiar-pix');
     const chavePixValor = document.getElementById('pix-chave-valor');
     const mensagemCopiarPix = document.getElementById('mensagem-copiar-pix');
+    const mensagemStatusPedido = document.getElementById('mensagem-status-pedido');
     const genero = document.getElementById('genero');
     const campoGeneroOutro = document.getElementById('campo-genero-outro');
     const generoOutro = document.getElementById('generoOutro');
@@ -70,6 +72,7 @@ export function initFormulario() {
         // Timeout de segurança (30 segundos)
         timeoutSubmissao = setTimeout(() => {
             if (isSubmitting) {
+                fecharModalPixHandler();
                 exibirMensagemFormulario('erro', 'A requisição demorou muito. Tente novamente.');
                 restaurarFormulario();
             }
@@ -93,12 +96,17 @@ export function initFormulario() {
 
         console.log('Dados sendo enviados:', dados);
 
+        abrirModalPix();
+        definirStatusPedido('loading', 'Confirmando seu pedido...');
+        envioController = new AbortController();
+
         try {
             const response = await fetch('https://formspree.io/f/xkolvkvk', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
                 },
+                signal: envioController.signal,
                 body: JSON.stringify(dados)
             });
 
@@ -106,7 +114,8 @@ export function initFormulario() {
 
             // Formspree retorna 200 para sucesso
             if (response.ok) {
-                abrirModalPix();
+                definirStatusPedido('success', 'Pedido confirmado. Agora finalize o pagamento via Pix e clique em "Ja paguei".');
+                botaoJaPaguei?.removeAttribute('disabled');
             } else {
                 // Log do erro para debug
                 const responseText = await response.text();
@@ -115,9 +124,17 @@ export function initFormulario() {
             }
         } catch (error) {
             clearTimeout(timeoutSubmissao);
+
+            if (error?.name === 'AbortError') {
+                return;
+            }
+
             console.error('Erro completo:', error);
+            fecharModalPixHandler();
             exibirMensagemFormulario('erro', 'Não foi possível enviar o pedido. Tente novamente.');
             restaurarFormulario();
+        } finally {
+            envioController = null;
         }
     });
 
@@ -194,16 +211,47 @@ export function initFormulario() {
             mensagemCopiarPix.textContent = '';
         }
 
+        if (botaoJaPaguei) {
+            botaoJaPaguei.setAttribute('disabled', 'true');
+        }
+
         modalPix?.removeAttribute('hidden');
         document.body.style.overflow = 'hidden';
     }
 
-    function fecharModalPixHandler() {
+    function fecharModalPixHandler(opcoes = {}) {
+        const { cancelarEnvio = false } = opcoes;
+
         modalPix?.setAttribute('hidden', 'true');
         document.body.style.overflow = '';
 
         if (mensagemCopiarPix) {
             mensagemCopiarPix.textContent = '';
+        }
+
+        definirStatusPedido();
+
+        if (cancelarEnvio && isSubmitting) {
+            clearTimeout(timeoutSubmissao);
+
+            if (envioController) {
+                envioController.abort();
+                envioController = null;
+            }
+
+            restaurarFormulario();
+            exibirMensagemFormulario('erro', 'Envio cancelado. Você pode ajustar e enviar novamente.');
+        }
+    }
+
+    function definirStatusPedido(tipo = '', mensagem = '') {
+        if (!mensagemStatusPedido) return;
+
+        mensagemStatusPedido.className = 'mensagem-status-pedido';
+        mensagemStatusPedido.textContent = mensagem;
+
+        if (tipo) {
+            mensagemStatusPedido.classList.add(`is-${tipo}`);
         }
     }
 
@@ -246,12 +294,12 @@ export function initFormulario() {
         form.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
 
-    fecharModalPix?.addEventListener('click', fecharModalPixHandler);
+    fecharModalPix?.addEventListener('click', () => fecharModalPixHandler({ cancelarEnvio: true }));
     botaoCopiarPix?.addEventListener('click', copiarChavePixHandler);
     botaoJaPaguei?.addEventListener('click', confirmarPagamentoHandler);
     modalPix?.addEventListener('click', (event) => {
         if (event.target === modalPix) {
-            fecharModalPixHandler();
+            fecharModalPixHandler({ cancelarEnvio: true });
         }
     });
 }

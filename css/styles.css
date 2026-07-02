@@ -691,14 +691,23 @@ nav {
 .modal-pix {
   position: fixed;
   inset: 0;
-  background: rgba(17, 24, 39, 0.8);
+  background: rgba(17, 24, 39, 0.82);
   display: flex;
   align-items: center;
   justify-content: center;
   padding: 1rem;
   z-index: 1000;
   pointer-events: auto;
-  backdrop-filter: blur(2px);
+}
+
+@supports ((-webkit-backdrop-filter: blur(2px)) or (backdrop-filter: blur(2px))) {
+  @media (min-width: 769px) {
+    .modal-pix {
+      background: rgba(17, 24, 39, 0.7);
+      -webkit-backdrop-filter: blur(2px);
+      backdrop-filter: blur(2px);
+    }
+  }
 }
 
 .modal-pix[hidden] {
@@ -754,6 +763,24 @@ nav {
   margin: 0.75rem 0 1rem;
   color: var(--primary-purple);
   font-weight: 600;
+}
+
+.mensagem-status-pedido {
+  min-height: 1.25rem;
+  margin: 0 0 1rem;
+  font-weight: 600;
+}
+
+.mensagem-status-pedido.is-loading {
+  color: var(--text-light);
+}
+
+.mensagem-status-pedido.is-success {
+  color: #065F46;
+}
+
+.mensagem-status-pedido.is-error {
+  color: #991B1B;
 }
 
 /* --- RESPONSIVIDADE (MOBILE FIRST) --- */
