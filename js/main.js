@@ -7,12 +7,17 @@ document.addEventListener('DOMContentLoaded', () => {
     const playersAmostras = document.querySelectorAll('#amostras audio');
     const botaoMenu = document.querySelector('.menu-toggle');
     const menuNavegacao = document.getElementById('nav-menu');
+    const primeiroLinkMenu = menuNavegacao?.querySelector('a');
 
-    const fecharMenu = () => {
+    const fecharMenu = ({ devolverFoco = false } = {}) => {
         if (!botaoMenu || !menuNavegacao) return;
         botaoMenu.setAttribute('aria-expanded', 'false');
         botaoMenu.setAttribute('aria-label', 'Abrir menu');
         menuNavegacao.classList.remove('is-open');
+
+        if (devolverFoco) {
+            botaoMenu.focus();
+        }
     };
 
     const alternarMenu = () => {
@@ -21,6 +26,12 @@ document.addEventListener('DOMContentLoaded', () => {
         botaoMenu.setAttribute('aria-expanded', aberto ? 'false' : 'true');
         botaoMenu.setAttribute('aria-label', aberto ? 'Abrir menu' : 'Fechar menu');
         menuNavegacao.classList.toggle('is-open', !aberto);
+
+        if (!aberto) {
+            primeiroLinkMenu?.focus();
+        } else {
+            botaoMenu.focus();
+        }
     };
 
     botaoMenu?.addEventListener('click', alternarMenu);
@@ -31,7 +42,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
     document.addEventListener('keydown', (evento) => {
         if (evento.key === 'Escape') {
-            fecharMenu();
+            const menuAberto = botaoMenu?.getAttribute('aria-expanded') === 'true';
+            if (menuAberto) {
+                fecharMenu({ devolverFoco: true });
+            }
         }
     });
 

@@ -7,6 +7,7 @@ export function initFormulario() {
     let isSubmitting = false;
     let timeoutSubmissao = null;
     let envioController = null;
+    let ultimoElementoComFoco = null;
 
     const modalPix = document.getElementById('modal-pix');
     const fecharModalPix = document.getElementById('fechar-modal-pix');
@@ -23,6 +24,10 @@ export function initFormulario() {
     const contatoValorLabel = document.getElementById('contatoValorLabel');
     const captchaPergunta = document.getElementById('captcha-pergunta');
     const captchaResposta = document.getElementById('captchaResposta');
+    const modalConteudo = modalPix?.querySelector('.modal-pix-conteudo');
+    const seletoresFocoModal = 'a[href], button:not([disabled]), textarea:not([disabled]), input:not([disabled]), select:not([disabled]), [tabindex]:not([tabindex="-1"])';
+
+    sincronizarAriaDescribedBy(form);
 
     gerarCaptcha();
     atualizarCampoGeneroOutro();
@@ -215,8 +220,12 @@ export function initFormulario() {
             botaoJaPaguei.setAttribute('disabled', 'true');
         }
 
+        ultimoElementoComFoco = document.activeElement instanceof HTMLElement ? document.activeElement : null;
         modalPix?.removeAttribute('hidden');
         document.body.style.overflow = 'hidden';
+
+        const elementosFocaveis = obterElementosFocaveisModal();
+        elementosFocaveis[0]?.focus();
     }
 
     function fecharModalPixHandler(opcoes = {}) {
@@ -230,6 +239,11 @@ export function initFormulario() {
         }
 
         definirStatusPedido();
+
+        if (ultimoElementoComFoco) {
+            ultimoElementoComFoco.focus();
+            ultimoElementoComFoco = null;
+        }
 
         if (cancelarEnvio && isSubmitting) {
             clearTimeout(timeoutSubmissao);
@@ -294,6 +308,47 @@ export function initFormulario() {
         form.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
 
+    function obterElementosFocaveisModal() {
+        if (!modalPix || !modalConteudo || modalPix.hasAttribute('hidden')) {
+            return [];
+        }
+
+        return Array.from(modalConteudo.querySelectorAll(seletoresFocoModal)).filter((elemento) => {
+            if (!(elemento instanceof HTMLElement)) return false;
+            return !elemento.hasAttribute('hidden') && elemento.tabIndex !== -1;
+        });
+    }
+
+    function tratarTecladoModal(event) {
+        if (!modalPix || modalPix.hasAttribute('hidden')) return;
+
+        if (event.key === 'Escape') {
+            event.preventDefault();
+            fecharModalPixHandler({ cancelarEnvio: true });
+            return;
+        }
+
+        if (event.key !== 'Tab') return;
+
+        const focaveis = obterElementosFocaveisModal();
+        if (!focaveis.length) return;
+
+        const primeiro = focaveis[0];
+        const ultimo = focaveis[focaveis.length - 1];
+        const ativo = document.activeElement;
+
+        if (event.shiftKey && ativo === primeiro) {
+            event.preventDefault();
+            ultimo.focus();
+            return;
+        }
+
+        if (!event.shiftKey && ativo === ultimo) {
+            event.preventDefault();
+            primeiro.focus();
+        }
+    }
+
     fecharModalPix?.addEventListener('click', () => fecharModalPixHandler({ cancelarEnvio: true }));
     botaoCopiarPix?.addEventListener('click', copiarChavePixHandler);
     botaoJaPaguei?.addEventListener('click', confirmarPagamentoHandler);
@@ -302,6 +357,7 @@ export function initFormulario() {
             fecharModalPixHandler({ cancelarEnvio: true });
         }
     });
+    document.addEventListener('keydown', tratarTecladoModal);
 }
 
 function gerarIdPedido() {
@@ -392,6 +448,7 @@ function limparErrosFormulario(form) {
 
 function definirErroCampo(campo, mensagem) {
     const elementoErro = obterElementoErro(campo);
+    atualizarAriaDescribedByCampo(campo);
 
     campo.setAttribute('aria-invalid', 'true');
 
@@ -404,6 +461,7 @@ function definirErroCampo(campo, mensagem) {
 function limparErroCampo(campo) {
     const elementoErro = obterElementoErro(campo);
     campo.removeAttribute('aria-invalid');
+    atualizarAriaDescribedByCampo(campo);
 
     if (elementoErro) {
         elementoErro.textContent = '';
@@ -414,6 +472,40 @@ function limparErroCampo(campo) {
 function obterElementoErro(campo) {
     if (!campo?.id) return null;
     return document.getElementById(`erro-${campo.id}`);
+}
+
+function sincronizarAriaDescribedBy(form) {
+    const campos = form.querySelectorAll('input, textarea, select');
+    campos.forEach((campo) => atualizarAriaDescribedByCampo(campo));
+}
+
+function atualizarAriaDescribedByCampo(campo) {
+    if (!campo?.id || typeof campo.getAttribute !== 'function') return;
+
+    const ids = new Set();
+    const atributoAtual = campo.getAttribute('aria-describedby') || '';
+    const ajudaId = `ajuda-${campo.id}`;
+    const erroId = `erro-${campo.id}`;
+
+    atributoAtual
+        .split(' ')
+        .map((id) => id.trim())
+        .filter(Boolean)
+        .forEach((id) => ids.add(id));
+
+    if (document.getElementById(ajudaId)) {
+        ids.add(ajudaId);
+    }
+
+    if (document.getElementById(erroId)) {
+        ids.add(erroId);
+    }
+
+    if (ids.size) {
+        campo.setAttribute('aria-describedby', Array.from(ids).join(' '));
+    } else {
+        campo.removeAttribute('aria-describedby');
+    }
 }
 
 function obterMensagemObrigatoria(campo) {
