@@ -215,10 +215,14 @@ nav {
 .nav-menu .nav-cta {
   padding: 0.55rem 1rem;
   border-bottom: 0;
+  background-color: var(--primary-purple);
+  color: var(--white);
 }
 
 .nav-menu .nav-cta:hover {
   border-bottom: 0;
+  background-color: var(--dark-purple);
+  color: var(--white);
 }
 
 /* --- SEÇÃO HERO --- */
@@ -367,20 +371,41 @@ nav {
 }
 
 #redes-sociais a {
-  display: inline-block;
-  padding: 0.65rem 1rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.75rem;
+  height: 2.75rem;
   border: 1px solid #E5E7EB;
-  border-radius: 999px;
+  border-radius: 50%;
   background: var(--white);
   color: var(--dark-purple);
-  font-weight: 700;
+  font-size: 1.25rem;
   transition: var(--transition);
 }
 
-#redes-sociais a:hover {
-  border-color: var(--primary-purple);
-  color: var(--primary-purple);
-  transform: translateY(-2px);
+#redes-sociais a[aria-label="Instagram"]:hover {
+  background: #E1306C;
+  border-color: #E1306C;
+  color: #fff;
+}
+
+#redes-sociais a[aria-label="TikTok"]:hover {
+  background: #69C9D0;
+  border-color: #69C9D0;
+  color: #010101;
+}
+
+#redes-sociais a[aria-label="WhatsApp"]:hover {
+  background: #25D366;
+  border-color: #25D366;
+  color: #fff;
+}
+
+#redes-sociais a[aria-label="Facebook"]:hover {
+  background: #1877F2;
+  border-color: #1877F2;
+  color: #fff;
 }
 
 #redes-sociais p {
@@ -870,4 +895,18 @@ nav {
     font-size: 1.75rem;
     margin-bottom: 1.5rem;
   }
+}
+/* --- RODAP� --- */
+footer {
+  text-align: center;
+  padding: 1.5rem 1rem;
+  background-color: var(--dark-purple);
+  color: var(--white);
+  font-size: 0.875rem;
+  margin-top: 2rem;
+}
+
+footer p {
+  margin: 0.25rem 0;
+  opacity: 0.85;
 }
