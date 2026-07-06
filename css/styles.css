@@ -278,7 +278,8 @@ nav {
 #prazos-e-politicas h2,
 #depoimentos h2,
 #faq h2,
-#redes-sociais h2 {
+#redes-sociais h2,
+#videos h2 {
   text-align: center;
   font-size: 2rem;
   color: var(--dark-purple);
@@ -572,6 +573,7 @@ nav {
   font-size: 1.1rem;
   color: var(--dark-purple);
   margin-bottom: 0.75rem;
+  text-align: center;
 }
 
 .card-amostra audio {
@@ -896,7 +898,7 @@ nav {
     margin-bottom: 1.5rem;
   }
 }
-/* --- RODAPÉ --- */
+/* --- RODAPï¿½ --- */
 footer {
   text-align: center;
   padding: 1.5rem 1rem;
