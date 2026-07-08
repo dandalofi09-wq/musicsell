@@ -580,6 +580,10 @@ nav {
   width: 100%;
 }
 
+.card-amostra .instagram-media {
+  margin: 0 auto !important;
+}
+
 #formulario-pedido {
   padding: 0 2rem 5rem;
   max-width: 900px;
