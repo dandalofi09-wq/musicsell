@@ -268,7 +268,8 @@ nav {
 #prazos-e-politicas,
 #depoimentos,
 #faq,
-#redes-sociais {
+#redes-sociais,
+#contato {
   padding: 0 2rem 5rem;
   max-width: 1200px;
   margin: 0 auto;
@@ -279,6 +280,7 @@ nav {
 #depoimentos h2,
 #faq h2,
 #redes-sociais h2,
+#contato h2,
 #videos h2 {
   text-align: center;
   font-size: 2rem;
@@ -411,6 +413,43 @@ nav {
 
 #redes-sociais p {
   color: var(--text-light);
+}
+
+#contato {
+  max-width: 900px;
+  text-align: center;
+}
+
+#contato ul {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+  margin-bottom: 1rem;
+  list-style: none;
+  padding: 0;
+}
+
+#contato a {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.6rem 1.25rem;
+  border: 1px solid #E5E7EB;
+  border-radius: 2rem;
+  background: var(--white);
+  color: var(--dark-purple);
+  font-size: 0.95rem;
+  font-weight: 600;
+  text-decoration: none;
+  transition: var(--transition);
+}
+
+#contato a:hover {
+  background: var(--dark-purple);
+  border-color: var(--dark-purple);
+  color: #fff;
 }
 
 #pacotes h2 {
@@ -915,4 +954,196 @@ footer {
 footer p {
   margin: 0.25rem 0;
   opacity: 0.85;
+}
+
+/* --- BOTÃO FLUTUANTE (FAB) --- */
+.fab-container {
+  position: fixed;
+  bottom: 2rem;
+  right: 2rem;
+  z-index: 998;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.75rem;
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(20px);
+  transition: opacity 0.4s ease, transform 0.4s ease;
+}
+
+.fab-container.fab-visible {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateY(0);
+}
+
+.fab-options {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.75rem;
+  max-height: 0;
+  opacity: 0;
+  overflow: hidden;
+  transition: max-height 0.45s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.3s ease;
+}
+
+.fab-container.fab-open .fab-options {
+  max-height: 200px;
+  opacity: 1;
+}
+
+/* Botões de opção */
+.fab-option {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 3rem;
+  height: 3rem;
+  border-radius: 50%;
+  text-decoration: none;
+  background: rgba(255, 255, 255, 0.18);
+  backdrop-filter: blur(18px) saturate(180%);
+  -webkit-backdrop-filter: blur(18px) saturate(180%);
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  box-shadow:
+    0 4px 20px rgba(109, 40, 217, 0.22),
+    inset 0 1px 0 rgba(255, 255, 255, 0.5),
+    inset 0 -1px 0 rgba(109, 40, 217, 0.1);
+  color: var(--primary-purple);
+  overflow: hidden;
+  transition: transform 0.3s ease, box-shadow 0.3s ease, background 0.3s ease, color 0.3s ease;
+}
+
+/* Camada de reflexo interno */
+.fab-option::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.35) 0%, transparent 55%);
+  pointer-events: none;
+}
+
+.fab-option:hover,
+.fab-option:focus-visible {
+  transform: scale(1.18);
+  background: rgba(109, 40, 217, 0.82);
+  color: var(--white);
+  box-shadow: 0 8px 28px rgba(109, 40, 217, 0.45);
+}
+
+/* Tooltip elegante */
+.fab-option::after {
+  content: attr(data-tooltip);
+  position: absolute;
+  right: calc(100% + 0.65rem);
+  top: 50%;
+  transform: translateY(-50%) scale(0.92);
+  background: rgba(59, 7, 100, 0.88);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  color: var(--white);
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  padding: 0.3rem 0.7rem;
+  border-radius: 20px;
+  white-space: nowrap;
+  opacity: 0;
+  pointer-events: none;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  transition: opacity 0.2s ease, transform 0.2s ease;
+}
+
+.fab-option:hover::after,
+.fab-option:focus-visible::after {
+  opacity: 1;
+  transform: translateY(-50%) scale(1);
+}
+
+/* Botão principal "+" */
+.fab-main {
+  position: relative;
+  width: 3.5rem;
+  height: 3.5rem;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  cursor: pointer;
+  overflow: hidden;
+  background: rgba(109, 40, 217, 0.52);
+  backdrop-filter: blur(20px) saturate(200%);
+  -webkit-backdrop-filter: blur(20px) saturate(200%);
+  box-shadow:
+    0 8px 32px rgba(109, 40, 217, 0.38),
+    inset 0 1px 0 rgba(255, 255, 255, 0.45),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.08);
+  color: var(--white);
+  font-size: 1.8rem;
+  font-weight: 300;
+  line-height: 1;
+  transition: transform 0.3s ease, box-shadow 0.3s ease, background 0.3s ease;
+}
+
+.fab-main:hover {
+  transform: scale(1.12);
+  background: rgba(109, 40, 217, 0.82);
+  box-shadow: 0 12px 40px rgba(109, 40, 217, 0.52);
+}
+
+.fab-plus {
+  display: block;
+  transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  user-select: none;
+}
+
+.fab-container.fab-open .fab-plus {
+  transform: rotate(45deg);
+}
+
+/* Brilho passante */
+.fab-main::before {
+  content: '';
+  position: absolute;
+  top: -60%;
+  left: -80%;
+  width: 55%;
+  height: 220%;
+  background: linear-gradient(
+    120deg,
+    transparent 25%,
+    rgba(255, 255, 255, 0.5) 50%,
+    transparent 75%
+  );
+  transform: skewX(-18deg);
+  opacity: 0;
+}
+
+.fab-main.fab-shine::before {
+  animation: fabShine 0.75s ease-out forwards;
+}
+
+@keyframes fabShine {
+  0%   { left: -80%; opacity: 1; }
+  100% { left: 160%; opacity: 1; }
+}
+
+@media (max-width: 480px) {
+  .fab-container {
+    bottom: 1.25rem;
+    right: 1.25rem;
+  }
+
+  .fab-main {
+    width: 3.2rem;
+    height: 3.2rem;
+    font-size: 1.6rem;
+  }
+
+  .fab-option {
+    width: 2.8rem;
+    height: 2.8rem;
+  }
 }
